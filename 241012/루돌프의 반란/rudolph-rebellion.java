@@ -147,7 +147,7 @@ public class Main{
 
             // 루돌프와 충돌한 산타 기절
             if (santaList[sNumber] != null) {
-                santaList[sNumber].faint += 2;
+                santaList[sNumber].faint = 2;
             }
         }
 
@@ -164,7 +164,7 @@ public class Main{
 
             // 방향 선택하기
             int now_distance = (Ry - santaList[i].i) * (Ry - santaList[i].i) + (Rx - santaList[i].j) * (Rx - santaList[i].j);
-            int min_distance = Integer.MAX_VALUE;
+            int min_distance = now_distance;
             int[] min_direction = {0, 0};
             for (int k = 0; k < 4; k++) {
                 int next_i = santaList[i].i + santaDy[k];
@@ -198,7 +198,6 @@ public class Main{
             if ((Ry == new_i) && (Rx == new_j)) {
                 santaList[i].score += D;
 
-
                 for (int s = 0; s < D - 1; s++) { // 밀려난 거리 = D - 루돌프한테 전진한 횟수(1)
                     santaList[i].i -= min_direction[0];
                     santaList[i].j -= min_direction[1];
@@ -211,12 +210,12 @@ public class Main{
                 }
 
                 // 루돌프와 충돌한 산타 기절
-                if (santaList[i] != null) santaList[i].faint += 2;
+                if (santaList[i] != null) santaList[i].faint = 2;
 
             } else {
                 // 충돌 안함, 그 자리에 픽스
-                map[santaList[i].i + min_direction[0]][santaList[i].j + min_direction[1]] = santaList[i].number;
-                visited[santaList[i].i + min_direction[0]][santaList[i].j + min_direction[1]] = true;
+                map[new_i][new_j] = santaList[i].number;
+                visited[new_i][new_j] = true;
 
                 santaList[i].i += min_direction[0];
                 santaList[i].j += min_direction[1];
