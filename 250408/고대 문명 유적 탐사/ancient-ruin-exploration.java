@@ -44,11 +44,11 @@ public class Main {
                     tmp_treasure = 0;
                     tmp_angle = 0;
                     int[][] tmp_map = rotateMap(r, c);
-
+                    
                     // 1차 유물 가치가 더 크면 맵 변환
                     if (treasure <= tmp_treasure) {
                     	if (treasure == tmp_treasure) {
-                    		if (tmp_angle > angle) continue;
+                    		if (tmp_angle >= angle) continue;
                     	}
                     	
                         treasure = tmp_treasure;
@@ -67,7 +67,7 @@ public class Main {
              for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) map[i][j] = selectedMap[i][j];
              }
-
+             
              // 벽면 숫자 대입 (영원히 반복해 ^^)
              while (true) {
                 // 1. 벽면 숫자 대입
