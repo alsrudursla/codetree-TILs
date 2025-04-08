@@ -39,8 +39,8 @@ public class Main {
             angle = -1;
             int[][] selectedMap = new int[5][5];
             // 3x3 첫 번째 좌표로 돌기
-            for (int r = 0; r < 3; r++) {
-                for (int c = 0; c < 3; c++) {
+            for (int c = 0; c < 3; c++) {
+                for (int r = 0; r < 3; r++) {
                     tmp_treasure = 0;
                     tmp_angle = 0;
                     int[][] tmp_map = rotateMap(r, c);
