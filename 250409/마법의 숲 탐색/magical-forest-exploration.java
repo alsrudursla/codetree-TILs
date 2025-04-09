@@ -113,7 +113,7 @@ public class Main {
     		int chkY = exitY + dy[k];
     		int chkX = exitX + dx[k];
     		
-    		if (chkBoundary(chkY, chkX) && visited[chkY][chkX] != fidx && visited[chkY][chkX] != 0) {
+    		if (chkBoundary(chkY, chkX) && visited[chkY][chkX] != fidx && visited[chkY][chkX] > 0) {
     			// 범위 내 && 다른 골렘이 있음 -> 행 이동 가능
     			canGo = true;
     			break;
@@ -123,7 +123,7 @@ public class Main {
     	if (!canGo) return mY + 1;
     	
     	Queue<int[]> myqueue = new LinkedList<>();
-    	myqueue.add(new int[] {exitY, exitX, -1}); // i, j, 현재 칸에 쓰인 번호
+    	myqueue.add(new int[] {exitY, exitX, -fidx}); // i, j, 현재 칸에 쓰인 번호
     	
     	boolean[][] v = new boolean[R+2][C+1];
     	v[exitY][exitX] = true;
@@ -143,8 +143,8 @@ public class Main {
     			
     			// 범위 내 && 가지 않았던 곳 && 0이면 안됨
     			if (chkBoundary(nextY, nextX) && !v[nextY][nextX] && visited[nextY][nextX] != 0) {
-    				// 내 골렘의 칸 혹은 출구, 내가 출구면 아무데나 갈 수 있음
-    				if (visited[nextY][nextX] == nowNum || visited[nextY][nextX] == -1 || nowNum == -1) {
+    				// 내 골렘의 칸 혹은 내 골렘의 출구, 내 골렘의 출구에선 다른 번호 칸 이동 가능
+    				if (visited[nextY][nextX] == nowNum || visited[nextY][nextX] == -nowNum || nowNum < 0) {
         				v[nextY][nextX] = true;
         				myqueue.add(new int[] {nextY, nextX, visited[nextY][nextX]});
     				}
@@ -194,7 +194,7 @@ public class Main {
     		int nY = mY + dy[k];
     		int nX = mX + dx[k];
     		
-    		if (nY == exitAreaY && nX == exitAreaX) visited[nY][nX] = -1;
+    		if (nY == exitAreaY && nX == exitAreaX) visited[nY][nX] = -fidx;
     		else visited[nY][nX] = fidx;
     	}
     }
