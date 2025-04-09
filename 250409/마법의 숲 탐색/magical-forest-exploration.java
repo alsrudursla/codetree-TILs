@@ -196,7 +196,7 @@ public class Main {
     	
     	// 처음 시작 좌표 (골렘의 아래 부분)
     	int startR = nowR + 1;
-    	int startC = now.startC;
+    	int startC = nowC;
     	boolean moved = false;
     	while (chkCanGoDown(startR, startC)) {
     		startR++;
