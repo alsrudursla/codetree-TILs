@@ -82,6 +82,7 @@ public class Main {
 		int sum = 0;
 		for (Knight k : knights) {
 			if (!k.isAlived) continue;
+			//System.out.println("살아남은 기사 idx : " + knights.indexOf(k));
 			sum += k.damage;
 		}
 
@@ -105,12 +106,15 @@ public class Main {
 				}
 			}
     		
+    		//System.out.println(knights.indexOf(now) + " 기사 idx 의 대미지 : " + damagedCnt);
+    		
     		// 대미지 업데이트
     		now.damage += damagedCnt;
     		
     		// 대미지만큼 체력 감소
     		now.blood -= damagedCnt;
     		if (now.blood <= 0) {
+    			//System.out.println("죽었다 idx : " + knights.indexOf(now));
     			now.isAlived = false;
     			
     			// kmap 에서 삭제
@@ -130,7 +134,7 @@ public class Main {
     private static void moveKnights(int kidx, int dir) {
     	// 동시 이동 - tmpMap
     	int[][] tmpMap = new int[L+1][L+1];
-    	List<Knight> tmpDamaged = new ArrayList<>();
+    	HashSet<Knight> tmpDamaged = new HashSet<>();
     	List<int[]> moved = new ArrayList<>(); // 기사idx, 움직인r, 움직인c
     	
     	Queue<int[]> myqueue = new LinkedList<>();
@@ -212,7 +216,7 @@ public class Main {
     		for (int i = 0; i < tmp.size(); i++) {
     			Knight now = tmp.get(i); // tmp 의 인덱스는 실제 기사의 인덱스가 아님!!!
     			int realIdx = knights.indexOf(now);
-    			//System.out.println("움직이지 않았지만 맵에 추가한 기사: " + i);
+    			//System.out.println("움직이지 않았지만 맵에 추가한 기사: " + realIdx);
     			
     			for (int i2 = 0; i2 < now.height; i2++) {
     				for (int j2 = 0; j2 < now.width; j2++) {
@@ -223,6 +227,7 @@ public class Main {
     		
     		// 피해 받은 기사 리스트 복사
     		for (Knight k : tmpDamaged) {
+    			if (knights.indexOf(k) == kidx) continue;
     			damaged.add(k);
     		}
     		
