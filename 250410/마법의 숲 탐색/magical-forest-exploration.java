@@ -32,12 +32,13 @@ public class Main {
         }
 
         // 정령의 수 만큼 반복
-        map = new int[R+2][C+1];
-        visited = new int[R+2][C+1];
+        map = new int[R+3][C+1];
+        visited = new int[R+3][C+1];
         int ans = 0;
         for (int t = 1; t <= K; t++) {
+        	//System.out.println("-----------------------" + " " + t + " ---------------------------");
         	// 처음 시작 좌표
-        	nowR = 0;
+        	nowR = 1;
             nowC = stones.get(t-1).startC;
 
             // 이동 루프
@@ -45,7 +46,8 @@ public class Main {
             while (canGo) {
                 // 1. 아래로 이동
             	goDown(t-1);
-            	if (nowR == R) { // 맵의 끝에 도달 (맵의 끝은 R+1)
+            	//System.out.println("아래로 이동 후 : " + nowR + " " + nowC);
+            	if (nowR == R+1) { // 맵의 끝에 도달 (맵의 끝은 R+2)
             		writeVisited(nowR, nowC, t);
             		break;
             	}
@@ -59,6 +61,7 @@ public class Main {
             		nowC--;
             		int ori_dir = stones.get(t-1).exitDir;
             		stones.get(t-1).exitDir = ((ori_dir+3)%4);
+            		//System.out.println("서쪽으로 이동 후 : " + nowR + " " + nowC + " 출구 " + stones.get(t-1).exitDir);
             		continue; // 다시 반복 : 아래 -> 서 -> 동
             	} else {
             		if (chkCanGoEast(nowR, nowC)) {
@@ -67,6 +70,7 @@ public class Main {
             			nowC++;
             			int ori_dir = stones.get(t-1).exitDir;
                 		stones.get(t-1).exitDir = ((ori_dir+1)%4);
+            			//System.out.println("동쪽으로 이동 후 : " + nowR + " " + nowC + " 출구 " + stones.get(t-1).exitDir);
             			continue;
             		} else {
             			canGo = false;
@@ -76,7 +80,7 @@ public class Main {
 
             // 최종 좌표가 맵 안에 없으면 맵 초기화 -> 맵 합산 없이 다음 정령으로
             if (!chkInTheMap(nowR, nowC)) {
-                for (int i = 0; i <= R+1; i++) {
+                for (int i = 0; i <= R+2; i++) {
                     for (int j = 0; j <= C; j++) {
                         visited[i][j] = 0;
                     }
@@ -86,12 +90,22 @@ public class Main {
             	// 맵 업데이트
                 writeVisited(nowR, nowC, t);
             }
+            
+//            for (int r = 3; r <= R+2; r++) {
+//        		for (int c = 1; c <= C; c++) {
+//        			System.out.print(visited[r][c] + " ");
+//        		}
+//        		System.out.println();
+//        	}
+//            System.out.println();
 
             // 최종 행 합산
-            if (nowR == R) { // 맵의 끝은 R+1
-                ans += R; // 맵 사이즈를 변경했기 때문에 마지막 위치는 R+1, 실제 마지막 행의 값은 R
+            if (nowR == R+1) { // 맵의 끝은 R+2
+                ans += R; 
+                //System.out.println(ans);
             } else {
-                ans += bfs(nowR, nowC, stones.get(t-1).exitDir, t) - 1;
+                ans += bfs(nowR, nowC, stones.get(t-1).exitDir, t) - 2;
+                //System.out.println(ans);
             }
         }
 
@@ -120,12 +134,14 @@ public class Main {
     		}
     	}
     	
+    	//System.out.println(canGo);
+    	
     	if (!canGo) return mY + 1;
     	
     	Queue<int[]> myqueue = new LinkedList<>();
     	myqueue.add(new int[] {exitY, exitX, -fidx}); // i, j, 현재 칸에 쓰인 번호
     	
-    	boolean[][] v = new boolean[R+2][C+1];
+    	boolean[][] v = new boolean[R+3][C+1];
     	v[exitY][exitX] = true;
     	
     	int biggestY = mY + 1; // 현재 골렘에서 갈 수 있는 가장 큰 행 좌표
@@ -147,6 +163,7 @@ public class Main {
     				if (visited[nextY][nextX] == nowNum || visited[nextY][nextX] == -nowNum || nowNum < 0) {
         				v[nextY][nextX] = true;
         				myqueue.add(new int[] {nextY, nextX, visited[nextY][nextX]});
+        				//System.out.println(nextY + " " + nextX);
     				}
     			}
     		}
@@ -156,11 +173,11 @@ public class Main {
     }
     
     private static boolean chkInTheMap(int mY, int mX) {
-    	if (!(2 <= mY && mY <= R+1 && 1 <= mX && mX <= C)) return false;
+    	if (!(3 <= mY && mY <= R+2 && 1 <= mX && mX <= C)) return false;
     	for (int k = 0; k < 4; k++) {
     		int chkY = mY + dy[k];
     		int chkX = mX + dx[k];
-    		if (!(2 <= chkY && chkY <= R+1 && 1 <= chkX && chkX <= C)) return false;
+    		if (!(3 <= chkY && chkY <= R+2 && 1 <= chkX && chkX <= C)) return false;
     	}
     	return true;
     }
@@ -205,10 +222,12 @@ public class Main {
     	// 처음 시작 좌표 (골렘의 아래 부분)
     	int startR = nowR + 1;
     	int startC = nowC;
+    	//System.out.println("아래 이동 시작 좌표 : " + startR + " " + startC);
     	boolean moved = false;
     	while (chkCanGoDown(startR, startC)) {
     		startR++;
     		moved = true;
+    		//System.out.println("아래 이동 중 : " + startR + " " + startC);
     	}
     	startR--;
     	
@@ -224,6 +243,6 @@ public class Main {
     }
     
     private static boolean chkBoundary(int i, int j) {
-    	return (0 <= i && i <= R+1 && 1 <= j && j <= C);
+    	return (0 <= i && i <= R+2 && 1 <= j && j <= C);
     }
 }
