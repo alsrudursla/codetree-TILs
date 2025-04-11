@@ -33,6 +33,15 @@ public class Main {
         tIdx++;
         
         for (int turn = 0; turn < K; turn++) {
+        	
+//        	for (int r = 1; r <= N; r++) {
+//        		for (int c = 1; c <= M; c++) {
+//        			System.out.print(map[r][c] + " ");
+//        		}
+//        		System.out.println();
+//        	}
+//        	System.out.println();
+        	
         	// 0. 4번 포탑 정비를 위해 미리 공격했는지, 피해 입었는지 알 수 있는 방문 배열 생성
         	visited = new boolean[N+1][M+1];
         	
@@ -42,7 +51,7 @@ public class Main {
         	int attackerX = attackerPos[1];
         	visited[attackerY][attackerX] = true;
         	
-        	//System.out.println("공격자 좌표 : " + attackerY + " " + attackerX);
+//        	System.out.println("공격자 좌표 : " + attackerY + " " + attackerX);
         	
         	// 핸디캡 적용 N+M 공격력 증가
         	map[attackerY][attackerX] += N+M;
@@ -55,6 +64,8 @@ public class Main {
         	int targetY = targetPos[0];
         	int targetX = targetPos[1];
         	visited[targetY][targetX] = true;
+        	
+//        	System.out.println("타겟 좌표 : " + targetY + " " + targetX);
         	
         	// 3. 공격 - visited 같이 처리해주기
         	boolean chkAttack = attackWithLaser(attackerY, attackerX, targetY, targetX);
@@ -100,6 +111,7 @@ public class Main {
     }
     
     private static void attackWithBomb(int attackerY, int attackerX, int targetY, int targetX) {
+//    	System.out.println("포탄으로 공격");
     	// 1. 공격 대상에 피해 입히기 - 공격자의 공격력 만큼
     	int damage = map[attackerY][attackerX];
     	map[targetY][targetX] -= damage;
@@ -114,9 +126,9 @@ public class Main {
     		
     		// 이어지는 맵
 			if (nextY == 0) nextY = N;
-			else if (nextY == N+1) nextY = 0;
+			else if (nextY == N+1) nextY = 1;
 			if (nextX == 0) nextX = M;
-			else if (nextX == M+1) nextX = 0;
+			else if (nextX == M+1) nextX = 1;
 			
 			// 공격자 제외
 			if (nextY == attackerY && nextX == attackerX) continue;
@@ -169,16 +181,17 @@ public class Main {
     			
     			// 이어지는 맵
     			if (nextY == 0) nextY = N;
-    			else if (nextY == N+1) nextY = 0;
+    			else if (nextY == N+1) nextY = 1;
     			if (nextX == 0) nextX = M;
-    			else if (nextX == M+1) nextX = 0;
-    			
+    			else if (nextX == M+1) nextX = 1;
+    			    			
     			if (!v[nextY][nextX]) { // 방문하지 않은 곳
     				if (map[nextY][nextX] != 0) { // 0 이 아닌 곳
     					v[nextY][nextX] = true;
     					List<int[]> newPath = new ArrayList<>(nowPath);
     					newPath.add(new int[] {nextY, nextX});
     					myqueue.add(new Node(nextY, nextX, newPath));
+    					//System.out.println("레이저 이동 : " + nextY + " " + nextX);
     				}
     			}
     		}
@@ -211,6 +224,7 @@ public class Main {
     
     // 2. 타겟 선정 - 공격력이 가장 높은 포탑 구하기
     private static int[] chooseTarget(int attackerY, int attackerX) {
+//    	System.out.println("타겟 선정");
     	// 우선순위에서 빠지면 0으로 만들어줌 (다음 조건에 적용되지 않게)
     	int[][] tmpMap = new int[N+1][M+1]; 
     	for (int i = 1; i <= N; i++) {
@@ -250,6 +264,7 @@ public class Main {
     				if (tmpMap[i][j] == strongestVal) {
     					biggestY = i;
     					biggestX = j;
+//    					System.out.println("공격력이 가장 높음");
     					return new int[] {biggestY, biggestX};
     				}
     			}
@@ -281,6 +296,7 @@ public class Main {
     				if (tMap[i][j] == oldestVal) {
     					biggestY = i;
     					biggestX = j;
+//    					System.out.println("공격한지 가장 오래됨");
     					return new int[] {biggestY, biggestX};
     				}
     			}
@@ -288,10 +304,11 @@ public class Main {
     	}
     	
     	// 3. 행+열 합이 가장 작은
-    	int smallestSum = 0;
+    	int smallestSum = Integer.MAX_VALUE;
     	for (int i = 1; i <= N; i++) {
     		for (int j = 1; j <= M; j++) {
     			if (tmpMap[i][j] == 0) continue;
+    			
     			smallestSum = Math.min(smallestSum, i+j);
     		}
     	}
@@ -312,6 +329,7 @@ public class Main {
     				if ((i+j) == smallestSum) {
     					biggestY = i;
     					biggestX = j;
+//    					System.out.println("행과 열의 합이 가장 작음");
     					return new int[] {biggestY, biggestX};
     				}
     			}
@@ -332,6 +350,7 @@ public class Main {
     		if (chk) break;
     	}
     	
+//    	System.out.println("열이 가장 작음");
     	return new int[] {biggestY, biggestX};
     }
     
