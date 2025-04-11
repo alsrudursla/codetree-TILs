@@ -93,7 +93,7 @@ public class Main {
         		}
         	}
         	
-        	if (cnt == 1) break;
+        	if (cnt <= 1) break;
         }
         
         // 남아있는 포탑 중 가장 강한 포탑의 공격력을 출력
@@ -137,6 +137,7 @@ public class Main {
 			if (map[nextY][nextX] == 0) continue;
 			
 			map[nextY][nextX] -= damage;
+            if (map[nextY][nextX] < 0) map[nextY][nextX] = 0;
 			visited[nextY][nextX] = true;
     	}
     }
