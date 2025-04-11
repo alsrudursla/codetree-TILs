@@ -170,7 +170,6 @@ public class Main {
     		List<int[]> nowPath = now.path;
     		
     		if (nowY == targetY && nowX == targetX) { // 도착
-    			nowPath.remove(nowPath.size()-1); // 마지막 도착지는 제외
     			shortestPath = nowPath;
     			break;
     		}
@@ -191,7 +190,7 @@ public class Main {
     					List<int[]> newPath = new ArrayList<>(nowPath);
     					newPath.add(new int[] {nextY, nextX});
     					myqueue.add(new Node(nextY, nextX, newPath));
-    					//System.out.println("레이저 이동 : " + nextY + " " + nextX);
+//    					System.out.println("레이저 이동 : " + nextY + " " + nextX);
     				}
     			}
     		}
@@ -199,6 +198,9 @@ public class Main {
     	
     	// 도달 불가능
     	if (shortestPath.size() == 0) return false;
+    	
+    	// 마지막 도착지는 제외해주기
+    	shortestPath.remove(shortestPath.size()-1);
     	
     	// 2. 공격 대상에 피해 입히기 - 공격자의 공격력 만큼
     	int damage = map[attackerY][attackerX];
@@ -212,6 +214,7 @@ public class Main {
     		int[] now = shortestPath.get(i);
     		int laserY = now[0];
     		int laserX = now[1];
+//    		System.out.println("최단거리 : " + laserY + " " + laserX);
     		
     		map[laserY][laserX] -= damage;
     		if (map[laserY][laserX] < 0) map[laserY][laserX] = 0;
