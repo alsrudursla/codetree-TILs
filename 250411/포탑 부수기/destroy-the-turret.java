@@ -466,7 +466,7 @@ public class Main {
     	
     	// 4. 열 값이 가장 큰
     	boolean chk = false;
-    	for (int j = M; j <= 1; j--) {
+    	for (int j = M; j >= 1; j--) {
     		for (int i = 1; i <= N; i++) {
     			if (tmpMap[i][j] != 0) {
     				smallestY = i;
