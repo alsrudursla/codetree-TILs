@@ -190,7 +190,7 @@ public class Main {
     					List<int[]> newPath = new ArrayList<>(nowPath);
     					newPath.add(new int[] {nextY, nextX});
     					myqueue.add(new Node(nextY, nextX, newPath));
-//    					System.out.println("레이저 이동 : " + nextY + " " + nextX);
+    					//System.out.println("레이저 이동 : " + nextY + " " + nextX);
     				}
     			}
     		}
@@ -341,8 +341,8 @@ public class Main {
     	
     	// 4. 열 값이 가장 작은
     	boolean chk = false;
-    	for (int i = 1; i <= N; i++) {
-    		for (int j = 1; j <= M; j++) {
+    	for (int j = 1; j <= M; j++) {
+    		for (int i = 1; i <= N; i++) {
     			if (tmpMap[i][j] != 0) {
     				biggestY = i;
     				biggestX = j;
@@ -466,8 +466,8 @@ public class Main {
     	
     	// 4. 열 값이 가장 큰
     	boolean chk = false;
-    	for (int i = N; i >= 1; i--) {
-    		for (int j = M; j >= 1; j--) {
+    	for (int j = M; j <= 1; j--) {
+    		for (int i = 1; i <= N; i++) {
     			if (tmpMap[i][j] != 0) {
     				smallestY = i;
     				smallestX = j;
@@ -477,7 +477,7 @@ public class Main {
     		}
     		if (chk) break;
     	}
-    	
+
     	return new int[] {smallestY, smallestX};
     }
 }
